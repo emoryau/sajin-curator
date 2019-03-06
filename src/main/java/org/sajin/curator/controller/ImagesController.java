@@ -18,7 +18,8 @@ import java.io.IOException;
 /**
  * @author emory.au
  */
-@RestController
+@RestController()
+@RequestMapping("/image")
 public class ImagesController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ImagesController.class);
 
@@ -27,7 +28,7 @@ public class ImagesController {
 
 	private Tika tika = new Tika();
 
-	@RequestMapping("/image/**")
+	@RequestMapping("/**")
 	public void getImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String requestImageName = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		requestImageName = basePath + "/" + requestImageName.substring(7);

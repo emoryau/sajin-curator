@@ -15,6 +15,7 @@ import java.util.Collection;
  * @author emory.au
  */
 @RestController
+@RequestMapping("/tiles")
 public class TilesController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TilesController.class);
 
@@ -26,7 +27,7 @@ public class TilesController {
 		this.tileService = tileService;
 	}
 
-	@RequestMapping("/tiles/**")
+	@RequestMapping("/**")
 	public Collection<Tile> tiles(HttpServletRequest request) {
 		String requestPath = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		return tileService.getTilesForPath(requestPath.substring(6));

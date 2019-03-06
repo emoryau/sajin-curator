@@ -1,10 +1,14 @@
 package org.sajin.curator.service;
 
 import org.apache.tika.Tika;
+import org.sajin.curator.controller.ImagesController;
+import org.sajin.curator.controller.TilesController;
 import org.sajin.data.Tile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -20,6 +24,8 @@ import java.util.Collection;
 @Service
 public class FilesystemTileServiceImpl implements TileService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(FilesystemTileServiceImpl.class);
+
+	private static final String FOLDER_IMG_URL = "http://images.clipartpanda.com/album-clipart-entertainment-photos-line_drawing.png";
 
 	private Tika tika = new Tika();
 
@@ -48,8 +54,9 @@ public class FilesystemTileServiceImpl implements TileService {
 			String resource;
 
 			if (f.isDirectory()) {
-				imgSrc = "http://www.clipartpanda.com/clipart_images/clip-art-categories-61813609";
-				resource = "/tiles" + path + f.getName();
+				imgSrc = FOLDER_IMG_URL;
+				Link directoryResourceLink = ControllerLinkBuilder.linkTo(TilesController.class).slash(path + "/" + f.getName()).withSelfRel();
+				resource = directoryResourceLink.getHref();
 			} else {
 				try {
 					if (!isPicture(f)) {
@@ -60,7 +67,8 @@ public class FilesystemTileServiceImpl implements TileService {
 					e.printStackTrace();
 					continue;
 				}
-				imgSrc = "/image" + path + "/" + f.getName();
+				Link imgSrcLink = ControllerLinkBuilder.linkTo(ImagesController.class).slash(path + "/" + f.getName()).withSelfRel();
+				imgSrc = imgSrcLink.getHref();
 				resource = imgSrc;
 			}
 
