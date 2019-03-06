@@ -1,11 +1,10 @@
 package org.sajin.curator.controller;
 
+import org.sajin.curator.service.TileService;
 import org.sajin.data.Tile;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -14,13 +13,16 @@ import java.util.Collection;
 @RestController
 public class TilesController {
 
+	private TileService tileService;
+
+	public TilesController(TileService tileService) {
+		assert tileService != null;
+
+		this.tileService = tileService;
+	}
+
 	@RequestMapping("/tiles")
 	public Collection<Tile> tiles() {
-		Tile tile1 = new Tile("x", "y", "z", LocalDate.now());
-		Collection<Tile> tiles = new ArrayList<>();
-
-		tiles.add(tile1);
-
-		return tiles;
+		return tileService.getTilesForPath("");
 	}
 }
