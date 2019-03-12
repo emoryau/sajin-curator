@@ -1,8 +1,10 @@
 package org.sajin.curator;
 
+import org.sajin.curator.spring.config.OAuth2Config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author emory.au
  */
 @SpringBootApplication
+@Import(OAuth2Config.class)
 public class StandaloneApplication {
 
 	@Bean
