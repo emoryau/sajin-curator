@@ -9,6 +9,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
@@ -25,13 +29,24 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @Import({AuthorizationServerConfig.class, ResourceServerConfig.class, MethodSecurityConfig.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
 	private ClientDetailsService clientDetailsService;
+
+	@Autowired
+	public SecurityConfig(ClientDetailsService clientDetailsService) {
+		assert clientDetailsService != null;
+
+		this.clientDetailsService = clientDetailsService;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication()
-				.withUser("mmm").password("{noop}311").roles("VIEWER");
+				.withUser("mmm").password("{bcrypt}$2a$10$UWUvO031kQIQ0KlB/xN.5OAHyzcUghilPuGtOieN5OTU.f5585exy").roles("VIEWER"); // password: three3MS
 	}
 
 	@Bean
@@ -62,7 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	@Autowired
-	public ApprovalStore approvalStore(TokenStore tokenStore) throws Exception {
+	public ApprovalStore approvalStore(TokenStore tokenStore) {
 		TokenApprovalStore store = new TokenApprovalStore();
 		store.setTokenStore(tokenStore);
 		return store;
