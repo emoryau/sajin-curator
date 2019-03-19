@@ -1,0 +1,16 @@
+security:
+  oauth2:
+    client:
+      client-id: acme
+      client-secret: acmesecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+server:
+  # Define a custom port instead of the default 8080
+  port: 8443
+  ssl:
+    key-store: classpath:keystore/sajin.p12
+    key-store-type: PKCS12
+    key-store-password: b423u8b*
+    key-alias: sajin

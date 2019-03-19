@@ -1,6 +1,6 @@
 package org.sajin.curator;
 
-import org.sajin.curator.spring.config.OAuth2Config;
+import org.sajin.curator.spring.config.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author emory.au
  */
 @SpringBootApplication
-@Import(OAuth2Config.class)
+@Import(SecurityConfig.class)
 public class StandaloneApplication {
 
 	@Bean
